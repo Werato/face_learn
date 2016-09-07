@@ -8,8 +8,7 @@
 
 	<?php
 	include("cons.php");
-	include("/function/sorce_loader.php");
-	$loader->load_scripts_href(scripts_dir);
+	include("function/sorce_loader.php");
 	$loader->load_css_href(css_dir);
 	?>
 	
@@ -23,6 +22,6 @@
 	<div id = "canvas_face">
 	</div>
 	<!--Javascript code that runs our Three.js examples -->
-
+<?=$loader->load_scripts_href(scripts_dir)?>
 </body>
 </html>

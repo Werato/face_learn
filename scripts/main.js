@@ -1,4 +1,3 @@
-$(function () {
 	var scene = new THREE.Scene();
 	var camera = new THREE.PerspectiveCamera(100,
 										window.innerWidth  /window.innerHeight,
@@ -24,7 +23,7 @@ $(function () {
 	canvas.height = 512;
 	var ctx = canvas.getContext('2d');
 	var img = new Image();
-	img.src = "../faces/sorce/map.png";
+	img.src = "./sorce/map.png";
 	img.onload = function () {
 
 		ctx.drawImage(img, 0, 0);
@@ -63,7 +62,7 @@ $(function () {
 
 var textureLoader = new THREE.TextureLoader();
 var material = new THREE.MeshPhongMaterial({
-	map: textureLoader.load("../faces/sorce/map.png"),
+	map: textureLoader.load("./sorce/map.png"),
 	transparent: true,
 	opacity: .9,
 	color: 0xFF0000
@@ -73,55 +72,68 @@ var material = new THREE.MeshPhongMaterial({
 	var plane = new THREE.Mesh(geom, material);
 	scene.add(plane);
 	//camera.lookAt(scene.position);
-	camera.target.position.copy(plane);
+	//camera.target.position.copy(plane);
 	$("#canvas_face").append(renderer.domElement);
 	renderScene(plane);	
 	
 	}
 
 
-
-
-
-
 	function renderScene(plane) {
-		
 		if(show_info)
 			stats.update();
-		
-
 		roteteCamera();
-
-		 
 		requestAnimationFrame(renderScene);
 		renderer.render(scene, camera);
 	}
 	
 
-	
+	var show = false
 	function roteteCamera(){
-		
-		if( (Key.isDown(Key.W)) && !Key.isDown(Key.SPACE))
-				camera.position.z -= speed;
+        //position
+		if( !Key.isDown(Key.SPACE) && (Key.isDown(Key.W))) {
+            camera.position.y -= speed;
+            show = true;
+        }
+        if( !Key.isDown(Key.SPACE) && (Key.isDown(Key.S))){
+            show = true;
+            camera.position.y += speed;
+        }
+
+        if( !Key.isDown(Key.SPACE) && (Key.isDown(Key.D)) ) {
+            camera.position.x += speed;
+            show = true;
+
+        }
+        if( !Key.isDown(Key.SPACE) && (Key.isDown(Key.A)) ) {
+            show = true;
+            camera.position.x -= speed;
+        }
+
+        //rotation
+        if( Key.isDown(Key.SPACE) && Key.isDown(Key.W) ){
+            camera.rotation.y += speed;
+            show = true;
+        }
+        if( Key.isDown(Key.SPACE) && Key.isDown(Key.S) ) {
+            camera.rotation.y -= speed;
+            show = true;
+        }
+        if( Key.isDown(Key.SPACE) && Key.isDown(Key.A) ){
+            camera.rotation.x += speed;
+            show = true;
+        }
+        if( Key.isDown(Key.SPACE) && Key.isDown(Key.D) ) {
+            camera.rotation.x -= speed;
+            show = true;
+        }
+
 			
-			if( (Key.isDown(Key.S)) && !Key.isDown(Key.SPACE))
-				camera.position.z += speed;
-			
-			if( (Key.isDown(Key.D)) )
-				camera.position.x += speed;
-			
-			if( (Key.isDown(Key.A)) )
-				camera.position.x -= speed;
-			
-			if( (Key.isDown(Key.SPACE)) && (Key.isDown(Key.W)) )
-				camera.position.y -= speed;
-		
-			if( (Key.isDown(Key.SPACE)) && (Key.isDown(Key.S)))
-				camera.position.y += speed;
-			
-			if( (Key.isDown(Key.S)) && (Key.isDown(Key.SPACE)) && (Key.isDown(Key.W)) )
-				console.log(camera.position);
-		
+			//if( (Key.isDown(Key.S)) && (Key.isDown(Key.SPACE)) && (Key.isDown(Key.W)) )
+        if(show) {
+            console.log(camera.position);
+            show = false;
+        }
 	}
 	
 	function initStats() {
@@ -134,4 +146,3 @@ var material = new THREE.MeshPhongMaterial({
 		$("#Stats-output").append(stats.domElement );
 		return stats;
 	}
-});
